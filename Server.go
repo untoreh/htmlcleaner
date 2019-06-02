@@ -1,7 +1,6 @@
 package HtmlCleaner
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
@@ -26,11 +25,10 @@ func (cln *CleanerPostBody) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	cleaned := cln.CleanBody(r.Body)
 
 	tools.Headers(&w)
-	if err := json.NewEncoder(w).Encode(cleaned); err != nil {
+	if _, err := w.Write([]byte(cleaned)); err != nil {
 		log.Print(err)
 		return
 	}
-	return
 }
 
 func (cln *CleanerPostTitle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -43,9 +41,8 @@ func (cln *CleanerPostTitle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	cleaned := cln.CleanTitle(r.Body)
 
 	tools.Headers(&w)
-	if err := json.NewEncoder(w).Encode(cleaned); err != nil {
+	if _, err := w.Write([]byte(cleaned)); err != nil {
 		log.Print(err)
 		return
 	}
-	return
 }
